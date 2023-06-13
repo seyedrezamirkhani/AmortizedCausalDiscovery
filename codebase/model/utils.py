@@ -127,7 +127,7 @@ def edge_accuracy(preds, target, binary=True):
     if binary:
         preds = (preds >= 1).long()
     correct = preds.float().data.eq(target.float().data.view_as(preds)).cpu().sum()
-    return np.float(correct) / (target.size(0) * target.size(1))
+    return float(correct) / (target.size(0) * target.size(1))
 
 
 def calc_auroc(pred_edges, GT_edges):
@@ -192,7 +192,7 @@ def edge_accuracy_observed(preds, target, num_atoms=5):
     idx = get_observed_relations_idx(num_atoms)
     _, preds = preds.max(-1)
     correct = preds[:, idx].eq(target[:, idx]).cpu().sum()
-    return np.float(correct) / (target.size(0) * len(idx))
+    return float(correct) / (target.size(0) * len(idx))
 
 
 def calc_auroc_observed(pred_edges, GT_edges, num_atoms=5):
@@ -252,8 +252,8 @@ def create_rel_rec_send(args, num_atoms):
     # Generate off-diagonal interaction graph
     off_diag = np.ones([num_atoms, num_atoms]) - np.eye(num_atoms)
 
-    rel_rec = np.array(encode_onehot(np.where(off_diag)[0]), dtype=np.float32)
-    rel_send = np.array(encode_onehot(np.where(off_diag)[1]), dtype=np.float32)
+    rel_rec = np.array(encode_onehot(np.where(off_diag)[0]), dtype=float)
+    rel_send = np.array(encode_onehot(np.where(off_diag)[1]), dtype=float)
     rel_rec = torch.FloatTensor(rel_rec)
     rel_send = torch.FloatTensor(rel_send)
 
